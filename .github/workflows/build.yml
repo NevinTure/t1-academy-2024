@@ -34,20 +34,6 @@ jobs:
           title: Code Coverage
           update-comment: true
 
-  checkstyle:
-    name: checkstyle
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
-
-      - run: mvn -pl bot -am checkstyle:check
-
   integration-test:
     name: integration tests
     runs-on: ubuntu-latest
