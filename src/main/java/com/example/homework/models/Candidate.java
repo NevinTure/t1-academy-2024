@@ -1,12 +1,12 @@
 package com.example.homework.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.example.homework.utils.Role;
 import jakarta.validation.constraints.Email;
+import lombok.Data;
 
+@Data
 public class Candidate {
-    @JsonProperty("last_name")
     String lastName;
-    @JsonProperty("first_name")
     String firstName;
     @Email
     String email;
