@@ -16,6 +16,9 @@ import java.util.List;
 public class CandidateRegistrationServiceImpl implements CandidateRegistrationService {
 
     private static final String INCREASED_STATUS = "increased";
+    private static final String SUCCESSFUL_REGISTRATION = "\"Данные внесены\"";
+    private static final String SUCCESSFUL_INC_STATUS_CHANGE
+            = "\"Статус increased зафиксирован. Задание выполнено\"";
 
     private final T1CampApiClient t1CampApiClient;
     private final ModelMapper mapper;
@@ -31,20 +34,24 @@ public class CandidateRegistrationServiceImpl implements CandidateRegistrationSe
     }
 
     @Override
-    public void register(Candidate candidate) {
+    public boolean register(Candidate candidate) {
         CandidateDto dto = mapper.map(candidate, CandidateDto.class);
-        t1CampApiClient.signUp(dto);
+        String result = t1CampApiClient.signUp(dto);
+        return SUCCESSFUL_REGISTRATION.equals(result);
     }
 
     @Override
     public String getCode(Candidate candidate) {
-        return t1CampApiClient.retrieveCode(candidate.getEmail());
+        return t1CampApiClient
+                .retrieveCode(candidate.getEmail())
+                .replaceAll("^\"|\"$", "");
     }
 
     @Override
-    public void setStatusIncreased(Candidate candidate, String code) {
+    public boolean setStatusIncreased(Candidate candidate, String code) {
         String token = Base64Encoder.encodeToken(candidate.getEmail(), code);
         SetStatusRequest request = new SetStatusRequest(token, INCREASED_STATUS);
-        t1CampApiClient.setStatus(request);
+        String result = t1CampApiClient.setStatus(request);
+        return SUCCESSFUL_INC_STATUS_CHANGE.equals(result);
     }
 }

@@ -5,6 +5,7 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
@@ -23,6 +24,7 @@ public class T1CampWebClientConfig {
         HttpClient httpClient = HttpClient
                 .create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT)
+                .followRedirect(true)
                 .doOnConnected(conn -> {
                     conn.addHandlerLast(new ReadTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS));
                     conn.addHandlerLast(new WriteTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS));
@@ -31,6 +33,7 @@ public class T1CampWebClientConfig {
         return WebClient
                 .builder()
                 .baseUrl(baseUrl)
+                .defaultHeader(HttpHeaders.ACCEPT, "*/*")
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
     }

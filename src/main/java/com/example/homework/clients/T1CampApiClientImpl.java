@@ -4,7 +4,6 @@ import com.example.homework.dtos.CandidateDto;
 import com.example.homework.dtos.GetRolesResponse;
 import com.example.homework.dtos.SetStatusRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -22,7 +21,10 @@ public class T1CampApiClientImpl implements T1CampApiClient {
     public GetRolesResponse retrieveRoles() {
         return t1CampWebClient
                 .get()
-                .accept(MediaType.APPLICATION_JSON)
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/api/get-roles")
+                                .build())
                 .retrieve()
                 .bodyToMono(GetRolesResponse.class)
                 .block();
@@ -32,8 +34,11 @@ public class T1CampApiClientImpl implements T1CampApiClient {
     public String signUp(CandidateDto dto) {
         return t1CampWebClient
                 .post()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/api/sign-up")
+                                .build())
                 .bodyValue(dto)
-                .accept(MediaType.TEXT_PLAIN)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -44,9 +49,10 @@ public class T1CampApiClientImpl implements T1CampApiClient {
         return t1CampWebClient
                 .get()
                 .uri(uriBuilder ->
-                        uriBuilder.queryParam("email", email)
+                        uriBuilder
+                                .path("/api/get-code")
+                                .queryParam("email", email)
                                 .build())
-                .accept(MediaType.TEXT_PLAIN)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -56,8 +62,11 @@ public class T1CampApiClientImpl implements T1CampApiClient {
     public String setStatus(SetStatusRequest request) {
         return t1CampWebClient
                 .post()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/api/set-status")
+                                .build())
                 .bodyValue(request)
-                .accept(MediaType.TEXT_PLAIN)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();

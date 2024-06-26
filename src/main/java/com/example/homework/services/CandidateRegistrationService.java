@@ -8,7 +8,9 @@ import java.util.List;
 public interface CandidateRegistrationService {
 
     List<Role> getRoles();
-    void register(Candidate candidate);
+
+    boolean register(Candidate candidate);
     String getCode(Candidate candidate);
-    void setStatusIncreased(Candidate candidate, String code);
+
+    boolean setStatusIncreased(Candidate candidate, String code);
 }

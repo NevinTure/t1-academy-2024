@@ -57,10 +57,10 @@
 		</dependency>
 
 		<!-- Testing -->
-		<!-- https://mvnrepository.com/artifact/org.wiremock/wiremock -->
+		<!-- https://mvnrepository.com/artifact/org.wiremock/wiremock-standalone -->
 		<dependency>
 			<groupId>org.wiremock</groupId>
-			<artifactId>wiremock</artifactId>
+			<artifactId>wiremock-standalone</artifactId>
 			<version>3.7.0</version>
 			<scope>test</scope>
 		</dependency>
